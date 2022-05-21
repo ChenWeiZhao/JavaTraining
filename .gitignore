@@ -5,3 +5,5 @@
 /.idea/encodings.xml
 /.idea/compiler.xml
 /.idea/.gitignore
+/.idea/
+/homework/03week/nio02/netty-gateway.iml
