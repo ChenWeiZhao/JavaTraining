@@ -15,20 +15,35 @@ import java.util.List;
 public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
 
     private static Logger logger = LoggerFactory.getLogger(HttpInboundHandler.class);
+    /**
+     * 后端服务器地址列表
+     */
     private final List<String> proxyServer;
+    /**
+     * 调用后端服务处理类
+     */
     private HttpOutboundHandler handler;
+    /**
+     * 自定义过滤器
+     */
     private HttpRequestFilter filter = new HeaderHttpRequestFilter();
-    
+
     public HttpInboundHandler(List<String> proxyServer) {
         this.proxyServer = proxyServer;
         this.handler = new HttpOutboundHandler(this.proxyServer);
     }
-    
+
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
         ctx.flush();
     }
 
+    /**
+     * 每当从客户端接收到新数据时，就会用接收到的消息调用此方法。
+     *
+     * @param ctx
+     * @param msg
+     */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         try {
@@ -39,10 +54,10 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
 //            if (uri.contains("/test")) {
 //                handlerTest(fullRequest, ctx);
 //            }
-    
+
             handler.handle(fullRequest, ctx, filter);
-    
-        } catch(Exception e) {
+
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             ReferenceCountUtil.release(msg);
@@ -72,10 +87,21 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
 //        }
 //    }
 //
-//    @Override
-//    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-//        cause.printStackTrace();
-//        ctx.close();
-//    }
+
+    /**
+     * 当Netty由于I/O错误引发异常，或者处理程序实现由于处理事件时引发异常而引发异常时，
+     * 使用Throwable调用事件处理程序方法。
+     * 在大多数情况下，捕获的异常应该被记录，并且它的关联通道应该在这里被关闭，
+     * 尽管这个方法的实现可能会有所不同，这取决于您想要做什么来处理异常情况。
+     * 例如，您可能希望在关闭连接之前发送带有错误代码的响应消息。
+     *
+     * @param ctx
+     * @param cause
+     */
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        cause.printStackTrace();
+        ctx.close();
+    }
 
 }

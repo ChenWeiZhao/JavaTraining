@@ -12,22 +12,29 @@ import io.netty.handler.codec.http.HttpServerCodec;
 import java.util.List;
 
 public class HttpInboundInitializer extends ChannelInitializer<SocketChannel> {
-	
-	private List<String> proxyServer;
-	
-	public HttpInboundInitializer(List<String> proxyServer) {
-		this.proxyServer = proxyServer;
-	}
-	
-	@Override
-	public void initChannel(SocketChannel ch) {
-		ChannelPipeline p = ch.pipeline();
+
+    private List<String> proxyServer;
+
+    public HttpInboundInitializer(List<String> proxyServer) {
+        this.proxyServer = proxyServer;
+    }
+
+    /**
+     * 初始化管道
+     *
+     * @param ch
+     */
+    @Override
+    public void initChannel(SocketChannel ch) {
+        //数据处理管道，就是事件处理器链
+        ChannelPipeline pipeline = ch.pipeline();
 //		if (sslCtx != null) {
-//			p.addLast(sslCtx.newHandler(ch.alloc()));
+//			pipeline.addLast(sslCtx.newHandler(ch.alloc()));
 //		}
-		p.addLast(new HttpServerCodec());
-		//p.addLast(new HttpServerExpectContinueHandler());
-		p.addLast(new HttpObjectAggregator(1024 * 1024));
-		p.addLast(new HttpInboundHandler(this.proxyServer));
-	}
+        pipeline.addLast(new HttpServerCodec());
+        //pipeline.addLast(new HttpServerExpectContinueHandler());
+        pipeline.addLast(new HttpObjectAggregator(1024 * 1024));
+        //添加自定义的入站处理事件
+        pipeline.addLast(new HttpInboundHandler(this.proxyServer));
+    }
 }
