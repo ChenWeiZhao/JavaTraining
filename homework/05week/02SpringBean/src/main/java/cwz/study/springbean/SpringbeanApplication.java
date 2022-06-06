@@ -16,11 +16,11 @@ public class SpringbeanApplication {
         //SpringApplication.run(SpringbeanApplication.class, args);
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:config/applicationContext.xml");
 
-        //Bean1
+        //Bean1 -XML
         Bean1 bean1 = (Bean1) applicationContext.getBean("Bean1");
         bean1.myName();
 
-        //Bean2
+        //Bean2 -注解
         Bean2 bean2 = (Bean2) applicationContext.getBean("bean2");
         bean2.myName();
     }
