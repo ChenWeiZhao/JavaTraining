@@ -21,24 +21,24 @@ package cwz.study.starterdemo.entity;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.annotation.Resource;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 @Data
+@Component("School")
 public class School implements ISchool{
 
-    // Resource 按类型加载,primary true：启动时就装配
     @Autowired(required = true)
-    Klass class1;
+    Klass class100;
 
-    //按名字装载
-    @Resource(name = "student100")
-    Student student100;
+    @Autowired
+    @Qualifier("student2")
+    Student student2;
 
     @Override
     public void ding() {
 
-        System.out.println("Class1 have " + this.class1.getStudents().size() + " students and one is " + this.student100);
+        System.out.println("Class1 have " + this.class100.getStudents().size() + " students and one is " + this.student2);
 
     }
 }

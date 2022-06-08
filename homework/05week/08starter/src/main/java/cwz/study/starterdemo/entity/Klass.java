@@ -20,12 +20,16 @@
 package cwz.study.starterdemo.entity;
 
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Data
+@Component("class100")
 public class Klass {
 
+    @Autowired
     List<Student> students;
 
     public void dong() {
