@@ -18,10 +18,8 @@ public class JdbcDemo {
         Class.forName(DB_DRIVER);
         //1.使用 PreparedStatement 执行数据库操作，手动提交
         jdbcPreparedStatement();
-
         // 2.批处理方式
         jdbcBatch();
-
     }
 
     private static void jdbcBatch() throws SQLException {
