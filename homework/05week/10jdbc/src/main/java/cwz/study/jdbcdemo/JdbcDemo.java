@@ -17,7 +17,7 @@ public class JdbcDemo {
         //0.加载驱动
         Class.forName(DB_DRIVER);
         //1.使用 PreparedStatement 执行数据库操作，手动提交
-        //jdbcPreparedStatement();
+        jdbcPreparedStatement();
 
         // 2.批处理方式
         jdbcBatch();
