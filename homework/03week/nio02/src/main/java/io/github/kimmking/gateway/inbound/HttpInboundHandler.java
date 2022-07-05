@@ -14,7 +14,6 @@ import java.util.List;
 
 public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
 
-    private static Logger logger = LoggerFactory.getLogger(HttpInboundHandler.class);
     /**
      * 后端服务器地址列表
      */
